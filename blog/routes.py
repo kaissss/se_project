@@ -4,7 +4,7 @@ from flask import render_template, url_for, flash, redirect
 from flask.globals import request, session
 
 from blog import app,db,bycrypt
-from blog.forms import RegistrationForm, LoginForm,ResetPasswordFormEmail,FormResetPassword,RestuarantForm,PostForm
+from blog.forms import AboutForm, RegistrationForm, LoginForm,ResetPasswordFormEmail,FormResetPassword,RestuarantForm,PostForm
 from blog.model import Post, User, Restaurant, About
 from flask_login import login_user, current_user,logout_user
 from blog.sendmail import send_mail
@@ -204,12 +204,15 @@ def alter_comment():
 
 @app.route("/about",methods=['GET','POST'])
 def about():
-    
+    form = AboutForm()
     if request.method=='GET':
-        data = About.query.filter( About.id == 1).first()
-        return render_template('about.html', title='About',data=data.content)
+        form.content.data = About.query.filter( About.id == 1).first().content
+        return render_template('about.html', title='About',form=form)
 
     if request.method=='POST':
+        # about = About()
+        # if about.validate_on_submit(): 
+        #     print(about.content)
         data = About.query.filter(About.id == 1).first()
         data.content=request.values['content']
         db.session.commit()

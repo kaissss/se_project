@@ -13,19 +13,14 @@
             <svg class="icon">
               <use xlink:href="#icon-user"></use>
             </svg>
-            <span class="hidden">
-              Username
-            </span>
           </label> 
-          <textarea {% if not current_user.is_authenticated%}disabled{%endif%} 
-            name="content" rows="15" cols="50" style="font-size: 18pt";>{{data}}
-          </textarea>
+          {% if current_user.is_authenticated%}{{form.content(rows="15",cols="50",style="font-size: 18pt")}}
+            <div class="form__field">
+              <input type="submit" value="修改">
+            </div>
+          {%else%}{{form.content(rows="15",cols="50",style="font-size: 18pt",disabled=True)}}
+          {%endif%} 
         </div>
-        {% if current_user.is_authenticated%}
-          <div class="form__field">
-            <input type="submit" value="修改">
-          </div>
-        {%endif%}
       </form>
     </div>
 

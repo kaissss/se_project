@@ -66,7 +66,7 @@ class Restaurant(db.Model):
 
 class About(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(450),nullable=True)
+    content = db.Column(db.String(500),nullable=True)
 
 
     
