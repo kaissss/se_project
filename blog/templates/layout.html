@@ -51,8 +51,12 @@
         <ul>
           <li><a class="nav-link scrollto {%if title == 'index'%}active{%endif%}" href="/">主頁</a></li>
           <li><a class="nav-link scrollto {%if title == 'about'%}active{%endif%}" href="/about">關於</a></li>
+          {% if current_user.is_authenticated%}
+          <li><a class="getstarted scrollto" href="/logout">登出</a></li>
+          {%else%}
           <li><a class="nav-link scrollto" href="/register">註冊</a></li>
           <li><a class="getstarted scrollto" href="/login">登入</a></li>
+          {%endif%}
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
