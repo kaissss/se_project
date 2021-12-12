@@ -20,7 +20,7 @@ import base64 as b
 
 @app.route("/home",methods=['GET','POST'])
 def home():
-    return render_template('index.html')
+    return render_template('index.html',title='Index')
     
 @app.route("/layer2",methods=['GET','POST'])
 def layer2():
@@ -33,7 +33,7 @@ def layer2():
         if title1==None:
             return render_template('layer2card.html',data=None)
         title=Restaurant.query.filter( Restaurant.location == location).all()  
-        return render_template('layer2card.html',data=title,data1=title1)
+        return render_template('layer2card.html',data=title,data1=title1,title="Restaurant")
     if request.method=='POST':
         print(location)
         if request.form['submit_button']=='99':

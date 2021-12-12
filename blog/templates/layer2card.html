@@ -1,170 +1,182 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>layer2</title>
-  <link rel="icon" href="./static/images/food-icon.png" type="image/x-icon" />
-  <link rel='stylesheet' href='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css'>
-  <link rel='stylesheet' href='https://fonts.googleapis.com/icon?family=Material+Icons'><link rel="stylesheet" href="./static/css/layer2card.css">
-  <link rel="stylesheet" href="./static/css/messagebox.css">
-</head>
-<body>
- {% with messages = get_flashed_messages() %}
-               {% if messages %}
-                    {% for message in messages %}
-                    <div class="success box">
-                        {{message}}
-                    </div>
-                  {% endfor %}
-                {% endif %}
-              {% endwith %}
-
-<div class="topnav">
-  <a class="active" href="/home">Home</a>
-   {% if current_user.is_authenticated%}
-   <div class="dropdownwoo">
-    <button class="dropbtnwoo" onclick="location.href='/r_sumit'">新增餐廳
-      <i class="fa fa-caret-down"></i>
-    </button>
+{% extends 'layout.html' %}<!--繼承-->
+{% block content %}
+  <div class="container d-flex align-items-center justify-content-between" style="padding:20px 0px">
+    <nav id="navbar" class="navbar">
+      <ul>
+        <li><a class="getstarted scrollto" href="/r_sumit">新增餐廳</a></li>
+        <li class="dropdown"><a href="#"><span>排序</span> <i class="bi bi-chevron-down"></i></a>
+          <ul id="portfolio-flters">
+            <li><a href="#">價錢</a></li>
+            <li><a href="#">星級</a></li>
+          </ul>
+        </li>
+        <li class="dropdown"><a href="#"><span>篩選</span> <i class="bi bi-chevron-down"></i></a>
+          <ul>
+            <li class="dropdown"><a href="#"><span>價錢</span> <i class="bi bi-chevron-right"></i></a>
+              <ul id="portfolio-flters">
+                <li data-filter=".filter-1M"><a href="#">$100以下</a></li>
+                <li data-filter=".filter-3M"><a href="#">$100~$500</a></li>
+                <li data-filter=".filter-5M"><a href="#">$500以上</a></li>
+              </ul>
+            </li>
+            <li class="dropdown"><a href="#"><span>評分</span> <i class="bi bi-chevron-right"></i></a>
+              <ul id="portfolio-flters">
+                <li data-filter=".filter-1S"><a href="#">1星</a></li>
+                <li data-filter=".filter-3S"><a href="#">2~4星</a></li>
+                <li data-filter=".filter-5S"><a href="#">5星</a></li>
+              </ul>
+            </li>
+            <li class="dropdown"><a href="#"><span>國家</span> <i class="bi bi-chevron-right"></i></a>
+              <ul id="portfolio-flters">
+                <li data-filter=".filter-TW"><a href="#">臺灣</a></li>
+                <li data-filter=".filter-ID"><a href="#">印尼</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      <li><ul id="portfolio-flters"><li data-filter="*"><a href="#">重設</a></li></ul></li>
+      </ul>
+      <i class="bi bi-list mobile-nav-toggle"></i>
+    </nav><!-- .navbar -->
   </div>
   
-    {% else %}
-    {%endif%}
-   <div class="dropdownwoo">
-    <button class="dropbtnwoo">價錢
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-contentwoo">
-      {% if data[0] %}
-      <form action="" method="POST">
-      <button   name="submit_button"value="99" >100內</button>
-      </form>
-      <form action="" method="POST">
-      <button  name="submit_button"value="101">100~300</button>
-      </form>
-      <form action="" method="POST">
-       <button  name="submit_button"value="301">300上</button>
-      </form>
-      {% else %}
-      <form action="" method="POST">
-      <button   name="submit_button"value="99" >100內</button>
-      </form>
-      <form action="" method="POST">
-      <button  name="submit_button"value="101">100~300</button>
-      </form>
-      <form action="" method="POST">
-       <button  name="submit_button"value="301">300上</button>
-      </form>
-     
-      {% endif %}
-    </div>
-  </div>
-   <div class="dropdownwoo">
-    <button class="dropbtnwoo">評分
-      <i class="fa fa-caret-down"></i>
-    </button>
-    <div class="dropdown-contentwoo">
-     {% if data[0] %}
-      <form action="" method="POST">
-      <button   name="submit_button"value="1" >1星</button>
-      </form>
-      <form action="" method="POST">
-      <button  name="submit_button"value="3">2~4星</button>
-      </form>
-      <form action="" method="POST">
-       <button  name="submit_button"value="5">5星</button>
-      </form>
-      {% else %}
-      <form action="" method="POST">
-      <button   name="submit_button"value="1" >1星</button>
-      </form>
-      <form action="" method="POST">
-      <button  name="submit_button"value="3">2~4星</button>
-      </form>
-      <form action="" method="POST">
-       <button  name="submit_button"value="5">5星</button>
-      </form>
-     
-      {% endif %}
-    </div>
-    
-  </div>
+    <!-- ======= Portfolio Section ======= -->
+    <section id="portfolio" class="portfolio">
+      <div class="container" data-aos="fade-up">
   
- 
- 
-</div>
+        <div class="section-title">
+          <h2>Restaurant</h2>
+          <p>餐廳評價</p>
+        </div>
+  
+        <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
+          {%for r in data %}
+          <div class="col-md-6 col-lg-3 portfolio-item 
+            filter-{{ r.location }}
+            filter-{%if r.rated<=1 %}1S{%elif r.rated>=5%}5S{%else%}3S{%endif%}
+            filter-{%if r.money<=100 %}1M{%elif r.money>=500%}5M{%else%}3M{%endif%}">
+            <div class="portfolio-wrap">
+              <img src=
+                {%if r.image %}"data:image/jpeg;base64,{{(r.image).decode('ISO-8859-1')}}"
+                {%else%}"https://i.pinimg.com/564x/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.jpg" {%endif%}
+                class="img-fluid" alt="Photo of empty">
+              <div class="portfolio-links">
+                <a href={%if r.image %}"data:image/jpeg;base64,{{(r.image).decode('ISO-8859-1')}}"
+                  {%else%}"https://i.pinimg.com/564x/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.jpg" {%endif%}
+                  data-gallery="portfolioGallery" class="portfolio-lightbox" title="{{r.title}}"><i class="bi bi-plus"></i>
+                </a>
+                <a href="/r_alter?title={{r.title}}" title="修改"><i class="bi bi-pencil"></i></a>
+                <a href="/comment?title={{r.title}}" title="評論"><i class="bi bi-inbox"></i></a>
+              </div>
+              <div class="portfolio-info">
+              </div>
+            </div>
+            <div class="kinfo">
+              <h4>{{r.title}}</h4>
+              <p>{{r.rated}}星★ ${{r.money}}</p>
+              <p>{{r.description}}</p>
+            </div>
+          </div>
+          {%endfor %}
 
-
-
-
-<!-- partial:index.partial.html -->
-<div class="container mt-2">
-<!--   <div class="card card-block mb-2">
-    <h4 class="card-title">Card 1</h4>
-    <p class="card-text">Welcom to bootstrap card styles</p>
-    <a href="#" class="btn btn-primary">Submit</a>
-  </div>   -->
-  <div class="row">
-  {% if data[0]=="0" %}
-  {%for r in data %}
-   
-    <div  class="col-md-3 col-sm-6" >
-      <div class="card card-block">
-
-      <h4 class="card-title text-right"><i class="material-icons">settings</i></h4>
-    <img src={%if r.image %}"data:image/jpeg;base64,{{(r.image).decode('ISO-8859-1')}}
-    
-    "{%else%}"https://upload.wikimedia.org/wikipedia/commons/5/58/Sunset_2007-1.jpg"{%endif%} alt="Photo of sunset"/>
-        <h5 class="card-title mt-3 mb-3">{{r.title}}</h5>
-        <p class="card-text">簡介：{{r.description}}
-                              價錢：{{r.money}}
-                              
-                              </p> 
-                  
+          <div class="col-md-6 col-lg-3 portfolio-item filter-app">
+            <div class="portfolio-wrap">
+              <img src="static/img/portfolio/portfolio-1.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="static/img/portfolio/portfolio-1.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 1"><i class="bi bi-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bi bi-link"></i></a>
+              </div>
+              <div class="portfolio-info">
+                <h4>App 1</h4>
+                <p>App</p>
+              </div>
+            </div>
+            <div class="">
+              <h4>123</h4>
+              <p>$100 4星</p>
+              <p>hojia</p>
+            </div>
+          </div>
+  
+          <div class="col-md-6 col-lg-3 portfolio-item filter-web">
+            <div class="portfolio-wrap">
+              <img src="static/img/portfolio/portfolio-2.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="static/img/portfolio/portfolio-2.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="Web 3"><i class="bi bi-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bi bi-link"></i></a>
+              </div>
+              <div class="portfolio-info">
+                <h4>Web 3</h4>
+                <p>Web</p>
+              </div>
+            </div>
+          </div>
+  
+          <div class="col-md-6 col-lg-3 portfolio-item filter-app">
+            <div class="portfolio-wrap">
+              <img src="static/img/portfolio/portfolio-3.jpg" class="img-fluid" alt="">
+              <div class="portfolio-links">
+                <a href="static/img/portfolio/portfolio-3.jpg" data-gallery="portfolioGallery" class="portfolio-lightbox" title="App 2"><i class="bi bi-plus"></i></a>
+                <a href="portfolio-details.html" title="More Details"><i class="bi bi-link"></i></a>
+              </div>
+              <div class="portfolio-info">
+                <h4>App 2</h4>
+                <p>App</p>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+  
       </div>
-    </div>
+    </section><!-- End Portfolio Section -->
 
-  {%endfor %}
-  {% elif data[0] %}
-  {%for r in data %}
- 
-    <div class="col-md-3 col-sm-6">
-     <a href="/comment?title={{r.title}}">
-      <div class="card card-block">
-      <h4 class="card-title text-right"><i class="material-icons">settings</i></h4>
-    <img src={%if r.image %}"data:image/jpeg;base64,{{(r.image).decode('ISO-8859-1')}}"
-        {%else%}"https://i.pinimg.com/564x/ae/8a/c2/ae8ac2fa217d23aadcc913989fcc34a2.jpg"{%endif%} alt="Photo of empty"/>
-        <h5 class="card-title mt-3 mb-3">{{r.title}}</h5>
-        <p class="card-text">簡介：{{r.description}}
-                              價錢：{{r.money}}
-                              評分:{{r.rated}}</p> 
-       <div > </a>
-       {% if current_user.is_authenticated%}
-      <a href ="/r_alter?title={{r.title}}">
-      <button onclick="">修改餐廳
-      </button>
-      </form>
-      {%else%}
-      {%endif%}
-      
-      </div>                      
+   <!-- ======= Services Section ======= -->
+   <section id="services" class="services section-bg">
+    <div class="container" data-aos="fade-up">
+
+      <div class="section-title">
+        <h2>Restaurant</h2>
+        <p>餐廳評論</p>
       </div>
-     
-      
+
+      <div class="row">
+        <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="100">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bxl-dribbble"></i></div>
+            <h4 class="title"><a href="">Lorem Ipsum</a></h4>
+            <p class="description">Voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="200">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bx-file"></i></div>
+            <h4 class="title"><a href="">Sed ut perspiciatis</a></h4>
+            <p class="description">Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="300">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bx-tachometer"></i></div>
+            <h4 class="title"><a href="">Magni Dolores</a></h4>
+            <p class="description">Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim</p>
+          </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3 d-flex align-items-stretch" data-aos="zoom-in" data-aos-delay="400">
+          <div class="icon-box">
+            <div class="icon"><i class="bx bx-world"></i></div>
+            <h4 class="title"><a href="">Nemo Enim</a></h4>
+            <p class="description">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum</p>
+          </div>
+        </div>
+
+      </div>
+
     </div>
-   
- 
-  {%endfor %}
-  {%else%}
-  <h4>還有沒餐廳被新增</h4>
-  {% endif %}
-   </div>
-    
+  </section><!-- End Services Section -->
 
-  
 
-<!-- partial -->
-  <script src='https://code.jquery.com/jquery-3.1.1.slim.min.js'></script>
-<script src='https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js'></script>
-</body>
-</html>
+  {% endblock content %}

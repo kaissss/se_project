@@ -1,50 +1,52 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>CodePen - HTML5 Contact Form</title>
-  <link rel="stylesheet" href="./static/css/r_sumit.css">
+{% extends 'layout.html' %}<!--繼承-->
+{% block content %}
+    <!-- ======= Contact Us Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container" data-aos="fade-up">
 
-</head>
-<body>
-<!-- partial:index.partial.html -->
-<div class="container">  
-  <form id="contact" action="" method="POST" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
-    <h3>新增餐廳</h3>
-    <h4>來新增你覺得讚讚的餐廳吧!</h4>
-    <fieldset>
-      {{form.title(placeholder="餐廳名稱")}}
-      {{form.title.errors[0]}}
-    </fieldset>
-     <fieldset>
-      {{form.location(placeholder="餐廳位置")}}
-      {{form.location.errors[0]}}
-    </fieldset>
-    <fieldset>
-     {{form.money(placeholder="餐廳價位")}}
-      {{form.money.errors[0]}}
-    </fieldset>
-    <fieldset>
-     {{form.tele(placeholder="餐廳電話")}}
-      {{form.tele.errors[0]}}
-    </fieldset>
-    <fieldset>
-     {{form.image(placeholder="餐廳相片", )}}
-      {{form.image.errors[0]}}
-    </fieldset>
-    <fieldset>
-    {{form.description(placeholder="餐廳簡述")}}
-      {{form.description.errors[0]}}
-    </fieldset>
-    <fieldset>
-      <button name="新增" type="submit" id="contact-submit" data-submit="...Sending">Submit</button>
-    </fieldset>
-  </form>
- 
-  
-</div>
-<!-- partial -->
-  
-</body>
-</html>
+        <div class="section-title">
+          <h2>Add Restaurant</h2>
+          <p>新增餐廳</p>
+        </div>
+        <form action="" method="post" role="form">
+          <div class="row justify-content-center">
+            <div class="col-lg-4 d-flex align-items-center" data-aos="fade-up" data-aos-delay="100">
+              <div class="info">
+                <div class="username">
+                  <i class="bi bi-person"></i>
+                  <p>{{form.title(placeholder="餐廳名稱",class="form-control")}}</p>
+                </div>
+
+                <div class="email">
+                  <i class="bi bi-geo-alt"></i>
+                  <p>{{form.location(placeholder="餐廳位置",class="form-control")}}</p>
+                </div>
+
+                <div class="phone">
+                  <i class="bi bi-coin"></i>
+                  <p>{{form.money(placeholder="餐廳價位",class="form-control")}}</p>
+                </div>
+
+                <div class="phone">
+                  <i class="bi bi-phone"></i>
+                  <p>{{form.tele(placeholder="餐廳電話",class="form-control")}}</p>
+                </div>
+
+                <div class="username">
+                  <i class="bi bi-image"></i>
+                  <p>{{form.image(placeholder="餐廳相片",class="form-control")}}</p>
+                </div>
+
+                <div class="username">
+                  <i class="bi bi-file-pdf"></i>
+                  <p>{{form.description(placeholder="餐廳簡述",class="form-control")}}</p>
+                </div>
+
+                <div class="text-center submitBtn"><button type="submit">新增</button></div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section><!-- End Contact Us Section -->
+  {% endblock content %}
