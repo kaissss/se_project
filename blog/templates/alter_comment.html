@@ -1,52 +1,40 @@
-<!DOCTYPE html>
-<html lang="en" >
-<head>
-  <meta charset="UTF-8">
-  <title>CodePen - add comment for Business Model Canvas </title>
-  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'><link rel="stylesheet" href="./static/css/comment.css">
+{% extends 'layout.html' %}<!--繼承-->
+{% block content %}
+    <!-- ======= Contact Us Section ======= -->
+    <section id="contact" class="contact">
+      <div class="container" data-aos="fade-up">
 
-</head>
-<body>
-<!-- partial:index.partial.html -->
-
-<div class="overlay" style="display: block;">
- 
-<div class="comment-list">
-
- <form method ="POST" action='' >
-    {{ form.hidden_tag() }}
-
-  <div class="comment-form-area comment-form-expanded clearfix">
-    <img class="project-collaborator" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/454262/default.png">
-    <div class="comment-area">
-      <header class="comment-body-header">
-        <label class="comment-username">You say</label>
-      </header>
-      
-      
-      <label class="new-comment-body">{{form.post(placeholder='你的評論(最少十字)')}}
-      {{form.post.errors[0]}}
-      {{form.rate(placeholder='你的評分(1~5)')}}
-      {{form.rate.errors[0]}}</label>
-     
-      <ul class="comment-actions clearfix">
-        <li class="pro-tip" id="mentions">
-        <div id="btn-group">
-          <li>
-            <button class="cancel-comment project-button">Cancel</button>
-          </li>
-          <li>
-            <button class="submit-comment project-accept"type="submit">Save</button>
-          </li>
+        <div class="section-title">
+          <h2>Edit Comment</h2>
+          <p>修改評論</p>
         </div>
-      </ul><!-- .comment-actions   -->
-    </div><!-- .comment-area -->
-  </div><!-- .comment-form-expanded -->
-</form>
+        <form action="" method="post" role="form" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+          <div class="row justify-content-center">
+            <div class="col-lg-4 d-flex align-items-center" data-aos="fade-up" data-aos-delay="100">
+              <div class="info">
+                <div class="username">
+                  <i class="bi bi-person"></i>
+                  <p>{{title}}</p>
+                </div>
+                
+                <div class="rate">
+                  <i class="bi bi-star"></i>
+                  <p>{{form.rate(placeholder="餐廳星級",class="form-control")}}</p>
+                  <p>{{form.rate.errors[0]}}</p>
+                </div>
 
-</div><!-- .comment-list -->
-</div></div></div>
-<!-- partial -->
-  
-</body>
-</html>
+                <div class="comment">
+                  <i class="bi bi-file-text"></i>
+                  <p>{{form.post(placeholder="餐廳評論",class="form-control")}}</p>
+                  <p>{{form.post.errors[0]}}</p>
+                </div>
+
+                <div class="text-center submitBtn"><button type="submit">存檔</button></div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </section><!-- End Contact Us Section -->
+  {% endblock content %}

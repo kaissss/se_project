@@ -57,12 +57,24 @@ class RestuarantForm(FlaskForm):
                            validators=[DataRequired()])
     image        = FileField('',validators=[DataRequired()])
     location = StringField('',
-                           [validators.AnyOf(values=['中央後門','宵夜街','校內','市區'])])
+                           [validators.AnyOf(values=['ID','TW'])])
     description  = TextAreaField('',validators=[DataRequired(), Length(min=4, max=10)])
     def validate_title(self, title):
         title = Restaurant.query.filter_by(title=title.data).first()
         if title:
             raise ValidationError('有人新增過了別皮')
+        
+class editRestuarantForm(FlaskForm):
+    """修改餐廳資訊"""
+    title = StringField('',
+                           validators=[DataRequired(), Length(min=2, max=7)])
+    money = IntegerField('',validators=[DataRequired()])
+    tele =  StringField('',
+                           validators=[DataRequired()])
+    image        = FileField('',validators=[DataRequired()])
+    location = StringField('',
+                           [validators.AnyOf(values=['ID','TW'])])
+    description  = TextAreaField('',validators=[DataRequired(), Length(min=4, max=10)])
 
 class PostForm(FlaskForm):
     "評論資訊"

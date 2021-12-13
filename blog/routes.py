@@ -4,7 +4,7 @@ from flask import render_template, url_for, flash, redirect
 from flask.globals import request, session
 
 from blog import app,db,bycrypt
-from blog.forms import AboutForm, RegistrationForm, LoginForm,ResetPasswordFormEmail,FormResetPassword,RestuarantForm,PostForm
+from blog.forms import AboutForm, RegistrationForm, LoginForm, ResetPasswordFormEmail, FormResetPassword, RestuarantForm, PostForm, editRestuarantForm
 from blog.model import Post, User, Restaurant, About
 from flask_login import login_user, current_user,logout_user
 from blog.sendmail import send_mail
@@ -108,11 +108,19 @@ def sumit():
         
 @app.route("/r_alter",methods=['GET','POST'])
 def alter():
-    form=RestuarantForm()
+    form = editRestuarantForm()
     global title
     if request.method=='GET':
-       
-        title=request.values['title']
+        title = request.values['title']
+        data = Restaurant.query.filter( Restaurant.title == title).first()
+        form.title.data = data.title
+        form.money.data = data.money
+        form.tele.data = data.tele
+        form.location.data = data.location
+        form.description.data = data.description
+        print(form.money)
+        return render_template('r_alter.html',form=form)
+        
     if form.validate_on_submit(): 
         image_data= request.files[form.image.name].read()
         Dimage_data= b.b64encode(image_data)
@@ -134,8 +142,7 @@ def alter():
                 db.session.commit()
                 
         flash('成功修改餐廳')
-        return redirect(url_for('home'))        
-                
+        return redirect(url_for('home'))            
      
     return render_template('r_alter.html',form=form)
         
@@ -150,9 +157,9 @@ def comment():
             print(title)
             post=Post.query.filter(Post.title==title).all()
             if post==None:
-                return render_template('comment.html',data=None,form=form)
+                return render_template('comment.html',data=None,form=form,title=title)
             else:
-                return render_template('comment.html',data=post,form=form)
+                return render_template('comment.html',data=post,form=form,title=title)
     if request.method=='POST':
         if form.validate_on_submit(): 
             print("嗨")
@@ -178,9 +185,9 @@ def comment():
     print(title)
     post=Post.query.filter(Post.title==title).all()
     if post==None:
-        return render_template('comment.html',data=None,form=form)
+        return render_template('comment.html',data=None,form=form,title=title)
     else:
-        return render_template('comment.html',data=post,form=form)
+        return render_template('comment.html',data=post,form=form,title=title)
     
         
 @app.route("/alter_comment",methods=['GET','POST'])
@@ -189,9 +196,12 @@ def alter_comment():
     form=PostForm()
     if request.method=='GET':
         C_id=request.values['id']
-        return render_template('alter_comment.html',form=form)
-           
-          
+        title=request.values['title']
+        post=Post.query.filter(Post.id==C_id).first()
+        form.post.data = post.content
+        form.rate.data = post.rated
+        return render_template('alter_comment.html',form=form,title=title)
+             
     if request.method=='POST':
         if form.validate_on_submit(): 
             post=Post.query.filter(Post.id==C_id).first()
@@ -228,7 +238,7 @@ def resetpassword():
         user = User.query.filter_by(email=form.email.data).first()
         if user:
             token=user.create_reset_token()
-            send_mail(sender='@GMAIL.COM',  #  發送者
+            send_mail(sender='ADMIN@GMAIL.COM',  #  發送者
                       recipients=[user.email],
                       subject='Reset Your Password',
                       template='resetemail',
