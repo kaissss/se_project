@@ -9,8 +9,24 @@
         
         <li class="dropdown"><a href="#"><span>排序</span> <i class="bi bi-chevron-down"></i></a>
           <ul id="portfolio-flters">
-            <li><a href="#">價錢</a></li>
-            <li><a href="#">星級</a></li>
+            <li class="dropdown"><a href="#"><span>價錢</span> <i class="bi bi-chevron-right"></i></a>
+              <ul id="portfolio-flters">
+                <li onclick="sort('money', 'asc')"><a href="#">由低到高</a></li>
+                <li onclick="sort('money', 'desc')"><a href="#">由高到低</a></li>
+              </ul>
+            </li>
+            <li class="dropdown"><a href="#"><span>星級</span> <i class="bi bi-chevron-right"></i></a>
+              <ul id="portfolio-flters">
+                <li onclick="sort('rated', 'asc')"><a href="#">由低到高</a></li>
+                <li onclick="sort('rated', 'desc')"><a href="#">由高到低</a></li>
+              </ul>
+            </li>
+            <li class="dropdown"><a href="#"><span>新增時間</span> <i class="bi bi-chevron-right"></i></a>
+              <ul id="portfolio-flters">
+                <li onclick="sort('time', 'asc')"><a href="#">由舊到新</a></li>
+                <li onclick="sort('time', 'desc')"><a href="#">由新到舊</a></li>
+              </ul>
+            </li>
           </ul>
         </li>
         <li class="dropdown"><a href="#"><span>篩選</span> <i class="bi bi-chevron-down"></i></a>
@@ -22,7 +38,7 @@
                 <li data-filter=".filter-5M"><a href="#">$500以上</a></li>
               </ul>
             </li>
-            <li class="dropdown"><a href="#"><span>評分</span> <i class="bi bi-chevron-right"></i></a>
+            <li class="dropdown"><a href="#"><span>星級</span> <i class="bi bi-chevron-right"></i></a>
               <ul id="portfolio-flters">
                 <li data-filter=".filter-1S"><a href="#">1星</a></li>
                 <li data-filter=".filter-3S"><a href="#">2~4星</a></li>
@@ -58,6 +74,11 @@
             filter-{{ r.location }}
             filter-{%if r.rated<=1 %}1S{%elif r.rated>=5%}5S{%else%}3S{%endif%}
             filter-{%if r.money<=100 %}1M{%elif r.money>=500%}5M{%else%}3M{%endif%}">
+            
+            <input class="rated" type="hidden" value="{{r.rated}}">
+            <input class="money" type="hidden" value="{{r.money}}">
+            <input class="time" type="hidden" value="{{r.id}}">
+
             <div class="portfolio-wrap">
               <img src=
                 {%if r.image %}"data:image/jpeg;base64,{{(r.image).decode('ISO-8859-1')}}"

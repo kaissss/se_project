@@ -36,54 +36,54 @@ def layer2():
         return render_template('layer2card.html',data=title,data1=title1,title="Restaurant")
     if request.method=='POST':
         print(location)
-        if request.form['submit_button']=='99':
-            title1=Restaurant.query.filter( Restaurant.location == location).all()
-            title=Restaurant.query.filter( 
-                                          Restaurant.location == location,
-                                          Restaurant.money<100
-                                          ).all()  
-            return render_template('layer2card.html',data=title,data1=title1)
-        elif request.form['submit_button']=='101':
-            title1=Restaurant.query.filter( Restaurant.location == location).all()
-            title=Restaurant.query.filter( 
-                                          Restaurant.location == location,
-                                          Restaurant.money>=100,
-                                          Restaurant.money<300,
-                                          ).all()  
-            return render_template('layer2card.html',data=title,data1=title1)
-        elif request.form['submit_button']=='301':
-            title1=Restaurant.query.filter( Restaurant.location == location).all()
-            title=Restaurant.query.filter( 
-                                          Restaurant.location == location,
+        # if request.form['submit_button']=='99':
+        #     title1=Restaurant.query.filter( Restaurant.location == location).all()
+        #     title=Restaurant.query.filter( 
+        #                                   Restaurant.location == location,
+        #                                   Restaurant.money<100
+        #                                   ).all()  
+        #     return render_template('layer2card.html',data=title,data1=title1)
+        # elif request.form['submit_button']=='101':
+        #     title1=Restaurant.query.filter( Restaurant.location == location).all()
+        #     title=Restaurant.query.filter( 
+        #                                   Restaurant.location == location,
+        #                                   Restaurant.money>=100,
+        #                                   Restaurant.money<300,
+        #                                   ).all()  
+        #     return render_template('layer2card.html',data=title,data1=title1)
+        # elif request.form['submit_button']=='301':
+        #     title1=Restaurant.query.filter( Restaurant.location == location).all()
+        #     title=Restaurant.query.filter( 
+        #                                   Restaurant.location == location,
                                           
-                                          Restaurant.money>300,
-                                          ).all()  
-            return render_template('layer2card.html',data=title,data1=title1)
-        elif request.form['submit_button']=='1':
-            title1=Restaurant.query.filter( Restaurant.location == location).all()
-            title=Restaurant.query.filter( 
-                                          Restaurant.location == location,
+        #                                   Restaurant.money>300,
+        #                                   ).all()  
+        #     return render_template('layer2card.html',data=title,data1=title1)
+        # elif request.form['submit_button']=='1':
+        #     title1=Restaurant.query.filter( Restaurant.location == location).all()
+        #     title=Restaurant.query.filter( 
+        #                                   Restaurant.location == location,
                                           
-                                          Restaurant.rated==1,
-                                          ).all()  
-            return render_template('layer2card.html',data=title,data1=title1)
-        elif request.form['submit_button']=='3':
-            title1=Restaurant.query.filter( Restaurant.location == location).all()
-            title=Restaurant.query.filter( 
-                                          Restaurant.location == location,
+        #                                   Restaurant.rated==1,
+        #                                   ).all()  
+        #     return render_template('layer2card.html',data=title,data1=title1)
+        # elif request.form['submit_button']=='3':
+        #     title1=Restaurant.query.filter( Restaurant.location == location).all()
+        #     title=Restaurant.query.filter( 
+        #                                   Restaurant.location == location,
                                           
-                                          Restaurant.rated>1,
-                                          Restaurant.rated<5,
-                                          ).all()  
-            return render_template('layer2card.html',data=title,data1=title1)
-        elif request.form['submit_button']=='5':
-            title1=Restaurant.query.filter( Restaurant.location == location).all()
-            title=Restaurant.query.filter( 
-                                          Restaurant.location == location,
+        #                                   Restaurant.rated>1,
+        #                                   Restaurant.rated<5,
+        #                                   ).all()  
+        #     return render_template('layer2card.html',data=title,data1=title1)
+        # elif request.form['submit_button']=='5':
+        #     title1=Restaurant.query.filter( Restaurant.location == location).all()
+        #     title=Restaurant.query.filter( 
+        #                                   Restaurant.location == location,
                                           
-                                          Restaurant.rated==5,
-                                          ).all()  
-            return render_template('layer2card.html',data=title,data1=title1)
+        #                                   Restaurant.rated==5,
+        #                                   ).all()  
+        #     return render_template('layer2card.html',data=title,data1=title1)
                
     
 @app.route("/r_sumit",methods=['GET','POST'])
