@@ -118,7 +118,6 @@ def alter():
         form.tele.data = data.tele
         form.location.data = data.location
         form.description.data = data.description
-        print(form.money)
         return render_template('r_alter.html',form=form)
         
     if form.validate_on_submit(): 
@@ -145,7 +144,16 @@ def alter():
         return redirect(url_for('home'))            
      
     return render_template('r_alter.html',form=form)
-        
+
+@app.route("/r_delete")
+def delete():
+    global title
+    title = request.values['title']
+    data = Restaurant.query.filter( Restaurant.title == title).first()
+    db.session.delete(data)
+    db.session.commit()
+
+    return render_template('index.html')           
     
 @app.route("/comment",methods=['GET','POST'])
 def comment():
@@ -211,6 +219,15 @@ def alter_comment():
             db.session.commit()
             flash('成功修改該餐廳評分')
             return redirect(url_for('home'))
+        
+@app.route("/delete_comment")
+def delete_comment():
+    global C_id
+    C_id=request.values['id']
+    post=Post.query.filter(Post.id==C_id).first()
+    db.session.delete(post)
+    db.session.commit()
+    return render_template('index.html')
 
 @app.route("/about",methods=['GET','POST'])
 def about():
