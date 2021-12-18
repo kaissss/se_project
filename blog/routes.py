@@ -102,7 +102,7 @@ def sumit():
          
             db.session.commit()
             flash('成功新增餐廳')
-            return redirect(url_for('home'))
+            return redirect(url_for('layer2', location = restaurant.location))
      
     return render_template('r_sumit.html',form=form)
         
@@ -141,7 +141,7 @@ def alter():
                 db.session.commit()
                 
         flash('成功修改餐廳')
-        return redirect(url_for('home'))            
+        return redirect(url_for('layer2', location = restaurant.location))
      
     return render_template('r_alter.html',form=form)
 
@@ -153,7 +153,7 @@ def delete():
     db.session.delete(data)
     db.session.commit()
 
-    return render_template('index.html')           
+    return redirect(url_for('layer2', location = data.location))     
     
 @app.route("/comment",methods=['GET','POST'])
 def comment():
@@ -168,9 +168,9 @@ def comment():
                 return render_template('comment.html',data=None,form=form,title=title)
             else:
                 return render_template('comment.html',data=post,form=form,title=title)
+            
     if request.method=='POST':
         if form.validate_on_submit(): 
-            print("嗨")
             print(title)
             post=Post(title=title,content=form.post.data,author=current_user,rated=form.rate.data)
             db.session.add(post)
@@ -188,7 +188,8 @@ def comment():
             restaurant.rated=avg_rated
             db.session.commit() 
             flash('成功新增該餐廳評分')
-            return redirect(url_for('home'))
+            return redirect(url_for('comment', title = title))
+        
     title=request.values['title']
     print(title)
     post=Post.query.filter(Post.title==title).all()
@@ -200,7 +201,7 @@ def comment():
         
 @app.route("/alter_comment",methods=['GET','POST'])
 def alter_comment():
-    global C_id
+    global C_id,title
     form=PostForm()
     if request.method=='GET':
         C_id=request.values['id']
@@ -218,16 +219,18 @@ def alter_comment():
             
             db.session.commit()
             flash('成功修改該餐廳評分')
-            return redirect(url_for('home'))
+            return redirect(url_for('comment', title = title))
+        
+    return render_template('alter_comment.html',form=form,title=title)
         
 @app.route("/delete_comment")
 def delete_comment():
-    global C_id
     C_id=request.values['id']
+    title=request.values['title']
     post=Post.query.filter(Post.id==C_id).first()
     db.session.delete(post)
     db.session.commit()
-    return render_template('index.html')
+    return redirect(url_for('comment', title = title))
 
 @app.route("/about",methods=['GET','POST'])
 def about():
@@ -263,7 +266,7 @@ def resetpassword():
                       user=current_user,
                       token=token)
             flash('請檢查你的電子信箱')
-            return render_template('index.html')
+            return render_template('login.html')
     return render_template('forgetpassword.html',form=form)
 
 @app.route("/resetpassword/<token>",methods=['GET','POST'])
